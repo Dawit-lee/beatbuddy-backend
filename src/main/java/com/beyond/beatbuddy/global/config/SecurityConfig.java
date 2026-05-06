@@ -95,6 +95,7 @@ public class SecurityConfig {
         config.addAllowedOrigin("http://localhost"); // 로컬 기본 포트 추가
         config.addAllowedOrigin("http://161.33.207.230");
         config.addAllowedOrigin("http://beatbuddy.local:30080");
+        config.addAllowedOrigin("http://beatbuddy.local");
         // 어떤 HTTP 메서드 허용할지
         config.addAllowedOriginPattern("*.trycloudflare.com");
 

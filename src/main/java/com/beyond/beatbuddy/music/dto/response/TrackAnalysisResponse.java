@@ -9,7 +9,7 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)  // 필요없는 필드 무시용 annotation
 public class TrackAnalysisResponse {
 
-	private String Id;
+	private String id;
 	private String error;
 
 	private Integer popularity;

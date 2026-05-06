@@ -24,6 +24,10 @@ pipeline {
         }
     }
 
+    triggers {
+        githubPush()
+    }
+
     environment {
         DOCKER_IMAGE_NAME = "dawitlee/beatbuddy-backend"
         DOCKER_CREDENTIALS_ID = "docker-hub-credentials"

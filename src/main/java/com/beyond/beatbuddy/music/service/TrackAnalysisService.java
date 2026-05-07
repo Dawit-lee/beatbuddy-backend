@@ -28,7 +28,7 @@ public class TrackAnalysisService {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final HttpClient client = HttpClient.newBuilder()
-			.connectTimeout(Duration.ofSeconds(10))
+			.connectTimeout(Duration.ofSeconds(15))
 			.build();
 	private final RateLimiter rateLimiter = RateLimiter.create(8.0);
 
@@ -59,7 +59,7 @@ public class TrackAnalysisService {
 	private TrackAnalysisResponse sendRequest(String fullUrl) {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(fullUrl))
-				.timeout(Duration.ofSeconds(30))  // 추가
+				.timeout(Duration.ofSeconds(60))  // 추가
 				.header("x-rapidapi-key", trackAnalysisKey)
 				.header("x-rapidapi-host", trackAnalysisHost)
 				.GET()

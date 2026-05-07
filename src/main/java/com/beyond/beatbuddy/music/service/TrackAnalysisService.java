@@ -15,6 +15,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 
 @Service
 public class TrackAnalysisService {
@@ -26,17 +27,14 @@ public class TrackAnalysisService {
 	private String trackAnalysisHost;
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	private final HttpClient client = HttpClient.newHttpClient();
+	private final HttpClient client = HttpClient.newBuilder()
+			.connectTimeout(Duration.ofSeconds(10))
+			.build();
 	private final RateLimiter rateLimiter = RateLimiter.create(8.0);
 
 	public TrackAnalysisResponse getFeatures(String spotifyId, String trackName, String artistName) {
 		rateLimiter.acquire();
-		try {
-			return requestBySpotifyId(spotifyId);
-		} catch (BusinessException e) {
-			System.out.println("SpotifyId 실패, 곡명+아티스트명으로 재시도: " + trackName);
-			return requestBySongAndArtist(trackName, artistName);
-		}
+		return requestBySpotifyId(spotifyId);
 	}
 
 	// spotifyId 방식
@@ -61,6 +59,7 @@ public class TrackAnalysisService {
 	private TrackAnalysisResponse sendRequest(String fullUrl) {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(fullUrl))
+				.timeout(Duration.ofSeconds(30))  // 추가
 				.header("x-rapidapi-key", trackAnalysisKey)
 				.header("x-rapidapi-host", trackAnalysisHost)
 				.GET()

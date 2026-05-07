@@ -31,7 +31,12 @@ public class TrackAnalysisService {
 
 	public TrackAnalysisResponse getFeatures(String spotifyId, String trackName, String artistName) {
 		rateLimiter.acquire();
-		return requestBySpotifyId(spotifyId);
+		try {
+			return requestBySpotifyId(spotifyId);
+		} catch (BusinessException e) {
+			System.out.println("SpotifyId 실패, 곡명+아티스트명으로 재시도: " + trackName);
+			return requestBySongAndArtist(trackName, artistName);
+		}
 	}
 
 	// spotifyId 방식
